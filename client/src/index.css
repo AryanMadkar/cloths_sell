@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: black;
+  font-family: "poppins", sans-serif;
+}
+
+.pur {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 25%,
+    rgba(121, 9, 15, 1) 57%,
+    rgba(124, 0, 255, 1) 100%
+  );
+}
