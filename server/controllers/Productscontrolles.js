@@ -34,11 +34,11 @@ const addproduct = async (req, res) => {
       category,
       subCategory,
       bestseller: bestseller === "true" ? "true" : "false",
-      sizes:JSON.parse(sizes),
+      sizes: JSON.parse(sizes),
       images: imageurl,
       date: Date.now(),
     };
-    const response = new productmodel(productdata)
+    const response = new productmodel(productdata);
     await response.save();
     return res.status(201).json({ message: "Product added successfully" });
   } catch (error) {
@@ -49,17 +49,39 @@ const addproduct = async (req, res) => {
 
 const getproducts = async (req, res) => {
   try {
-  } catch (error) {}
+    const products = await productmodel.find({});
+    res.json(products);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 const getproductById = async (req, res) => {
   try {
-  } catch (error) {}
+    const { productID } = req.body;
+    const product = await productmodel.findById(productID);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 const deleteproduct = async (req, res) => {
   try {
-  } catch (error) {}
+    let response = await productmodel.findByIdAndDelete(req.body.id);
+    if (!response) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 module.exports = {
