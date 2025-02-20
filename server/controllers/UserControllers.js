@@ -1,12 +1,12 @@
 import UserModel from "../model/User.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-const adminemails = ["aryanmadkar70@gmail.com"];
 // Helper function to generate JWT token
-
 const ADMIN_EMAILS = process.env.ADMIN_EMAILS
-  ? process.env.ADMIN_EMAILS.split(",") // If using env, split CSV string
+  ? process.env.ADMIN_EMAILS.split(",").map((email) => email.trim().toLowerCase()) // Trim & normalize
   : ["aryanmadkar70@gmail.com", "admin2@example.com"];
+
+
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "1d",
@@ -32,18 +32,20 @@ const registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Check if email is in the predefined admin list
-    const isAdmin = ADMIN_EMAILS.includes(email);
+    // Check if the email is in the admin list
+    const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
+
 
     const user = await UserModel.create({
       username,
-      email,
+      email: email.toLowerCase(), // Store email in lowercase
       password: hashedPassword,
-      role: isAdmin ? "admin" : "user", // Assign role based on email
+      role: isAdmin ? "admin" : "user", // Assign role based on admin list
     });
 
+    
     if (user) {
-      const token = generateToken(user._id);
+      const token = generateToken(user._id, user.role);
 
       res.cookie("token", token, {
         httpOnly: true,
@@ -52,19 +54,18 @@ const registerUser = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       });
 
-      res.status(201).json({
+      return res.status(201).json({
         _id: user.id,
         username: user.username,
         email: user.email,
-        role: user.role, // Send role in response
+        role: user.role, // Confirming role in response
       });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error in Registration:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 // @desc    Authenticate user
 // @route   POST /api/users/login
 // @access  Public

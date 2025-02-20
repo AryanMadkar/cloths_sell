@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000;
 app.get("/", (req, res) => {
   res.send("serve working");
 });
-app.use("/cloth/v1",useroutes)
+app.use("/cloth/v1/user",useroutes)
 
 const server = () => {
   dbconnect()
