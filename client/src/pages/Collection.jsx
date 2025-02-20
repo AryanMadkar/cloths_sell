@@ -8,6 +8,7 @@ const Collection = () => {
   const [catageory, setCatageory] = useState([]);
   const [subcat, setSubcat] = useState([]);
   const [sortType, setSortType] = useState("");
+  
   const togglecategeory = (e) => {
     if (catageory.includes(e.target.value)) {
       setCatageory((prev) => prev.filter((item) => item !== e.target.value));
@@ -58,7 +59,6 @@ const Collection = () => {
   };
   useEffect(()=>{
     sortproduct()
-
   },[sortType])
 
   return (
