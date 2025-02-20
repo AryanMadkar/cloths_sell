@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order";
 import Footer from "./components/Footer";
+import Searchbar from "./components/Searchbar";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   return (
     <div className="h-full w-full">
       <Navbar/>
+      <Searchbar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

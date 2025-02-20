@@ -3,7 +3,7 @@ import { useAuth } from "../Context/Context";
 import Title from "../components/Title";
 import ProductItem from "../components/Productitem";
 const Collection = () => {
-  const { valuepr } = useAuth();
+  const { valuepr,search,setSearch,showsearch } = useAuth();
   const [fileterproducts, setFileterproducts] = useState([]);
   const [catageory, setCatageory] = useState([]);
   const [subcat, setSubcat] = useState([]);
@@ -26,6 +26,9 @@ const Collection = () => {
 
   let applyfileter = () => {
     let productscopy = valuepr.products.slice();
+    if(showsearch && search){
+      productscopy = productscopy.filter((product) => product.name.toLowerCase().includes(search.toLowerCase()))
+    }
     if (catageory.length > 0) {
       productscopy = productscopy.filter((product) =>
         catageory.includes(product.category)
@@ -40,7 +43,7 @@ const Collection = () => {
   };
   useEffect(() => {
     applyfileter();
-  }, [catageory, subcat]);
+  }, [catageory, subcat,search,showsearch]);
 
   const sortproduct = () => {
     let productscopy = fileterproducts.slice();

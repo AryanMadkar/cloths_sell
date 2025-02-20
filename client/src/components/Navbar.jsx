@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { assets } from "../../public/frontend_assets/assets";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../Context/Context";
 
 const Navbar = () => {
-  const [visible, setVisible] = useState(false);
+  const { setShowsearch } = useAuth();
   const location = useLocation(); // Get current path
 
   return (
@@ -47,6 +48,9 @@ const Navbar = () => {
       <div className="flex flex-row items-center justify-center gap-4">
         {/* Search Icon */}
         <img
+          onClick={() => {
+            setShowsearch(true);
+          }}
           src={assets.search_icon}
           className="w-auto h-[2.2rem] btn-ghost cursor-pointer p-[0.4rem] hover:scale-110 transition-all ease-out duration-300 rounded "
           alt="Search"
