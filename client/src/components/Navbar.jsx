@@ -7,7 +7,7 @@ const Navbar = () => {
   const location = useLocation(); // Get current path
 
   return (
-    <div className="flex flex-row w-full  rounded-b-2xl border-black text-black items-center justify-between p-2 h-[5rem] bg-gray-100">
+    <div className="flex flex-row w-full   border-black text-black items-center justify-between p-2 h-[5rem] bg-gray-100">
       {/* Logo */}
       <div>
         <img
