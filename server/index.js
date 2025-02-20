@@ -5,6 +5,7 @@ import dbconnect from './db/Databas.js';
 import connectcloud from './config/CLudnary.js';
 import cookieParser from "cookie-parser"
 import useroutes from './routes/userRoutes.js';
+import Productroutes from './routes/products.route.js';
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
   res.send("serve working");
 });
 app.use("/cloth/v1/user",useroutes)
+app.use("/cloth/v1/products",Productroutes)
 
 const server = () => {
   dbconnect()
