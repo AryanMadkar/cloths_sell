@@ -42,6 +42,11 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  // Function to get the total count of items in the cart
+  const getcartcount = () => {
+    return cart.reduce((count, item) => count + item.quantity, 0);
+  };
+
   // Effect to calculate subtotal whenever cart changes
   useEffect(() => {
     const newSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -63,7 +68,7 @@ export const AuthProvider = ({ children }) => {
         setIsSignedIn,
         cart,
         addToCart, // Expose addToCart function
-        subtotal, // Expose subtotal
+        getcartcount, // Expose getcartcount function
       }}
     >
       {children}
