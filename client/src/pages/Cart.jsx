@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../Context/Context";
-import  LatestCollection from "../components/LatestCollection"
+import LatestCollection from "../components/LatestCollection";
+import { FcEmptyTrash } from "react-icons/fc";
+
 const Cart = () => {
-  const { cart, valuepr } = useAuth();
+  const { cart, valuepr,updatequantity } = useAuth();
   const [cartdata, setCartdata] = useState([]);
 
   useEffect(() => {
-    if (!cart || !valuepr?.products) return; // Prevent running when data is undefined   
+    if (!cart || !valuepr?.products) return; // Prevent running when data is undefined
     setCartdata(cart);
   }, [cart, valuepr]);
 
@@ -21,12 +23,11 @@ const Cart = () => {
           <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-white">
             Shopping Cart
           </h2>
-          {cartdata.map((item,index) => {
+          {cartdata.map((item, index) => {
             const product = valuepr?.products?.find(
               (product) => product._id === item.productId
             );
             console.log(product);
-            
 
             return (
               <div
@@ -66,6 +67,9 @@ const Cart = () => {
                         readOnly
                       />
                     </div>
+                    <div onClick={() => updatequantity(item.productId, item.size,0)}>
+                      <FcEmptyTrash className="text-[3rem] rounded-full bg-red-500 hover:scale-105 transition-all ease-out duration-300 cursor-pointer hover:bg-blue-600 p-2" />
+                    </div>
                     <h6 className="text-indigo-600 font-bold text-2xl">
                       ${item.price.toFixed(2)}
                     </h6>
@@ -82,15 +86,13 @@ const Cart = () => {
             </h6>
           </div>
           <div className="flex justify-center mt-10 w-full">
-          <button className="text-white w-1/2 text-2xl font-bold btn btn-success border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-            Proceed to Checkout
-          </button>
+            <button className="text-white w-1/2 text-2xl font-bold btn btn-success border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+              Proceed to Checkout
+            </button>
+          </div>
         </div>
-          
-        </div>
-       
       </section>
-      <LatestCollection/>
+      <LatestCollection />
     </div>
   );
 };

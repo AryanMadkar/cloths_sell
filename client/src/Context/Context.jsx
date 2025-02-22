@@ -49,14 +49,33 @@ export const AuthProvider = ({ children }) => {
 
   // Effect to calculate subtotal whenever cart changes
   useEffect(() => {
-    const newSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const newSubtotal = cart.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
     setSubtotal(newSubtotal);
-    
   }, [cart]);
 
+  const updatequantity = (productId, size, quantity) => {
+    setCart((prevCart) => {
+      if (quantity === 0) {
+        // Remove the item from the cart if quantity is zero
+        return prevCart.filter((item) => !(item.productId === productId && item.size === size));
+      }
+      
+      // Update quantity otherwise
+      return prevCart.map((item) =>
+        item.productId === productId && item.size === size
+          ? { ...item, quantity: quantity }
+          : item
+      );
+    });
+  };
+  
   return (
     <AuthContext.Provider
       value={{
+        updatequantity,
         subtotal,
         search,
         setSearch,

@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useAuth } from '../Context/Context';
-import MoreProducts from './MoreProducts';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../Context/Context";
+import MoreProducts from "./MoreProducts";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const { productID } = useParams();
   const { valuepr, addToCart } = useAuth();
   const [productData, setProductData] = useState({});
-  const [mainImage, setMainImage] = useState('');
-  const [selectedSize, setSelectedSize] = useState('');
+  const [mainImage, setMainImage] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchdata = async () => {
-      const product = valuepr?.products?.find(item => item?._id === productID);
+      const product = valuepr?.products?.find(
+        (item) => item?._id === productID
+      );
       if (product) {
         setProductData(product);
         setMainImage(product.image[0]); // Set first image as main image
-        setSelectedSize(product.sizes ? product.sizes[0] : ''); // Set default size
+        setSelectedSize(product.sizes ? product.sizes[0] : ""); // Set default size
       }
     };
 
@@ -47,16 +50,20 @@ const Product = () => {
               <img
                 alt="Product"
                 className="w-full h-auto object-cover object-center rounded"
-                src={mainImage || 'https://dummyimage.com/400x400'}
+                src={mainImage || "https://dummyimage.com/400x400"}
               />
             </div>
 
             {/* Product Details */}
             <div className="lg:w-1/3 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-              <h2 className="text-sm title-font text-white tracking-widest">{productData.category}</h2>
-              <h1 className="text-gray-100 text-3xl title-font font-medium mb-1">{productData.name}</h1>
+              <h2 className="text-sm title-font text-white tracking-widest">
+                {productData.category}
+              </h2>
+              <h1 className="text-gray-100 text-3xl title-font font-medium mb-1">
+                {productData.name}
+              </h1>
               <p className="leading-relaxed">{productData.description}</p>
-              
+
               {/* Size Selection */}
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex ml-6 items-center">
@@ -89,9 +96,27 @@ const Product = () => {
 
               {/* Price & Actions */}
               <div className="flex">
-                <span className="title-font font-medium text-2xl text-gray-900">₹{productData.price}</span>
+                <span className="title-font font-medium text-2xl text-gray-900">
+                  ₹{productData.price}
+                </span>
                 <button
-                  onClick={() => addToCart(selectedSize, quantity, productData._id,productData.price)}
+                  onClick={() => {
+                    toast.success(`Added ${productData.name} to cart`, {
+                      position: "top-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                    addToCart(
+                      selectedSize,
+                      quantity,
+                      productData._id,
+                      productData.price
+                    );
+                  }}
                   className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
                 >
                   Add to Cart
@@ -113,7 +138,10 @@ const Product = () => {
           </div>
         </div>
       </section>
-      <MoreProducts category={productData.category} subcategory={productData.subCategory} />
+      <MoreProducts
+        category={productData.category}
+        subcategory={productData.subCategory}
+      />
     </div>
   );
 };
