@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../Context/Context';
+import MoreProducts from './MoreProducts';
 
 const Product = () => {
   const { productID } = useParams();
-  const { valuepr } = useAuth();
+  const { valuepr, addToCart } = useAuth();
   const [productData, setProductData] = useState({});
   const [mainImage, setMainImage] = useState('');
+  const [selectedSize, setSelectedSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -14,6 +17,7 @@ const Product = () => {
       if (product) {
         setProductData(product);
         setMainImage(product.image[0]); // Set first image as main image
+        setSelectedSize(product.sizes ? product.sizes[0] : ''); // Set default size
       }
     };
 
@@ -58,7 +62,11 @@ const Product = () => {
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
-                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                    <select
+                      className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10"
+                      value={selectedSize}
+                      onChange={(e) => setSelectedSize(e.target.value)}
+                    >
                       {productData.sizes?.map((size, index) => (
                         <option key={index}>{size}</option>
                       ))}
@@ -67,11 +75,26 @@ const Product = () => {
                 </div>
               </div>
 
+              {/* Quantity Selection */}
+              <div className="flex items-center mb-5">
+                <span className="mr-3">Quantity</span>
+                <input
+                  type="number"
+                  min="1"
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  className="w-16 border border-gray-300 rounded px-2 py-1 text-center text-white"
+                />
+              </div>
+
               {/* Price & Actions */}
               <div className="flex">
                 <span className="title-font font-medium text-2xl text-gray-900">₹{productData.price}</span>
-                <button className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-                  Buy Now
+                <button
+                  onClick={() => addToCart(selectedSize, quantity, productData._id,productData.price)}
+                  className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded"
+                >
+                  Add to Cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg
@@ -90,6 +113,7 @@ const Product = () => {
           </div>
         </div>
       </section>
+      <MoreProducts category={productData.category} subcategory={productData.subCategory} />
     </div>
   );
 };
