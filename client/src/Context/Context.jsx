@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const newSubtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     setSubtotal(newSubtotal);
+    
   }, [cart]);
 
   return (

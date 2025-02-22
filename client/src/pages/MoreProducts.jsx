@@ -13,7 +13,6 @@ const MoreProducts = ({ category, subcategory }) => {
       );
 
       setRelated(productsCopy.slice(0, 6));
-      console.log(productsCopy);
     } else {
       console.log("No related products found");
     }
