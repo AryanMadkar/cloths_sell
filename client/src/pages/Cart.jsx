@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../Context/Context";
 import LatestCollection from "../components/LatestCollection";
 import { FcEmptyTrash } from "react-icons/fc";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate()
   const { cart, valuepr,updatequantity } = useAuth();
   const [cartdata, setCartdata] = useState([]);
 
@@ -18,8 +20,8 @@ const Cart = () => {
 
   return (
     <div>
-      <section className="py-24 relative">
-        <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
+      <section className="py-24 relative text-white">
+        <div className="w-full max-w-7xl  px-4 md:px-5 lg-6 mx-auto">
           <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-white">
             Shopping Cart
           </h2>
@@ -86,7 +88,9 @@ const Cart = () => {
             </h6>
           </div>
           <div className="flex justify-center mt-10 w-full">
-            <button className="text-white w-1/2 text-2xl font-bold btn btn-success border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
+            <button
+             onClick={() => navigate("/place_order")}
+             className="text-white w-1/2 text-2xl font-bold btn btn-success border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded ">
               Proceed to Checkout
             </button>
           </div>

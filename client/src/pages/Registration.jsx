@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
-import { useAuth } from '../Context/Context';
-import { Link, useNavigate } from 'react-router-dom';
-import {motion} from "framer-motion"
-const Login = () => {
-  const {setUserdata,setAuthen} = useAuth()
-  const navigate = useNavigate()
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+const Registration = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -13,39 +14,40 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     try {
-      const response = await axios.post(
-        "http://localhost:3000/health/v1/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      //   const response = await axios.post(
+      //     "http://localhost:3000/health/v1/register",
+      //     formData,
+      //     {
+      //       withCredentials: true,
+      //     }
+      //   );
+      console.log(formData);
+
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+      });
+      navigate("/login");
+      toast.success("Registration successful, please log in");
       console.log("Response:", response.data);
-      setUserdata(response.data.user)
-      navigate('/')
-      toast.success("Logged in successfully")
-      setAuthen(true)
     } catch (error) {
-      toast.error("Invalid email or password")
+      toast.error("Registration failed, please try again");
       console.error("Error:", error);
     }
   };
+
   return (
-    <div className="h-[100vh] w-[98vw] flex items-center justify-center">
+    <div className="h-[100vh] mb-20 w-[98vw] flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex leo2 min-h-fit bird rounded-2xl mt-24 text-white flex-col justify-center px-6 py-12 lg:px-8 w-1/2 border-2 border-white"
+        className="flex leo min-h-fit rounded-2xl mt-24 text-white flex-col justify-center px-6 py-12 lg:px-8 w-1/2 border-2 border-white"
       >
         <motion.div
           initial={{ scale: 0.8 }}
@@ -76,6 +78,28 @@ const Login = () => {
             className="space-y-6"
             onSubmit={handleSubmit}
           >
+            {/* Name Field */}
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-white"
+              >
+                Name
+              </label>
+              <div className="mt-2">
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  autoComplete="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="block w-full rounded-md bg-gray-900 px-3 py-1.5 text-white outline-1 -outline-offset-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm"
+                />
+              </div>
+            </div>
+
             {/* Email Field */}
             <div>
               <label
@@ -147,19 +171,19 @@ const Login = () => {
             transition={{ delay: 0.7 }}
             className="mt-10 text-center text-sm text-gray-400"
           >
-            Not an member?
+            Already an member?
             <Link
-              to={"/register"}
+              to={"/login"}
               href="#"
               className="font-semibold text-indigo-400 hover:text-indigo-300"
             >
-              Register
+              Login
             </Link>
           </motion.p>
         </div>
       </motion.div>
     </div>
   );
-}
+};
 
-export default Login
+export default Registration;

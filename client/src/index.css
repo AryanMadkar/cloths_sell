@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.input-field {
+  @apply w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-gray-600;
+}
+
+.payment-option {
+  @apply flex items-center border p-2 rounded-md cursor-pointer hover:bg-gray-100;
+}
+
 body {
   background: black;
   font-family: "poppins", sans-serif;

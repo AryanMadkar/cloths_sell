@@ -13,6 +13,7 @@ import PlaceOrder from "./pages/PlaceOrder";
 import Order from "./pages/Order";
 import Footer from "./components/Footer";
 import Searchbar from "./components/Searchbar";
+import Registration from "./pages/Registration";
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
         <Route path="/Product/:productID" element={<Product/>} />
         <Route path="/cart" element={<Cart/>} />
         <Route path="/login" element={<Login/>} />
-        <Route path="/place-order" element={<PlaceOrder/>} />
+        <Route path="/register" element={<Registration/>} />
+        <Route path="/place_order" element={<PlaceOrder/>} />
         <Route path="/order" element={<Order/>} />
       </Routes>
       <Footer/>
